@@ -1,0 +1,9 @@
+{% extends "base.html" %} {% block content %}
+<div class="container my-5">
+  <div class="text-center">
+    <h2>Бронирование отменено</h2>
+    <p>Очень жаль, надеемся вы передумаете! Вы всегда можете дать обратную связь в нашем <a href="#">telegram-боте</a></p>
+    <a class="btn btn-primary" href="{% url "homepage:home" %}">На главную</a>
+  </div>
+</div>
+{% endblock content %}

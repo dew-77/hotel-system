@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card justify-content-center">
+                <div class="card-header text-center align-items-center d-flex">
+                    <h5 class="mb-0">Регистрация</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'users:register' %}">
+                        {% csrf_token %} {% for error in form.errors.items %}
+                        <div class="alert alert-danger" style="margin-top: 20px">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Email*:</label>
+                            <input type="email" class="form-control" id="id_email" name="email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_first_name" class="form-label">Имя*:</label>
+                            <input type="text" class="form-control" id="id_first_name" name="first_name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_last_name" class="form-label">Фамилия*:</label>
+                            <input type="text" class="form-control" id="id_last_name" name="last_name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_patronymic" class="form-label">Отчество:</label>
+                            <input type="text" class="form-control" id="id_patronymic" name="patronymic">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_phone_number" class="form-label">Номер телефона:</label>
+                            <input type="text" class="form-control" id="id_phone_number" name="phone_number">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_password" class="form-label">Пароль*:</label>
+                            <input type="password" class="form-control" id="id_password" name="password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

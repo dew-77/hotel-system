@@ -1,0 +1,141 @@
+<div class="container mt-5">
+    <div class="row mt-4">
+        {% for service in services %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img class="card-img-top" src="{{ service.image.url }}" alt="{{ service.name }}" style="max-height:200px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ service.name }}</h5>
+                    <p class="card-text">{{ service.description }}</p>
+                    <button type="button" class="btn btn-primary add-service-btn {% if service.id in additional_service_ids %}disabled{% endif %}" data-service-id="{{ service.id }}">{{ service.price }} руб.</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="col-md-12 text-right mb-3">
+            <hr class="my-4"> 
+            <h2 class="mb-3">Корзина:</h2>
+            <div id="selected-services">
+                <span id="empty">Пусто</span>
+                <!-- Здесь будут отображаться выбранные услуги -->
+            </div> 
+            <button type="button" class="btn btn-primary btn-lg mt-3" id="add-selected-services-btn" style="display: none;" data-submit-url="{% url 'additional_services:submit_services' %}" data-booking="{{ booking.id }}">Добавить выбранные услуги</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Получение CSRF-токена из куки
+    function getCSRFToken() {
+        const csrfTokenCookie = document.cookie.split(';')
+            .map(c => c.trim())
+            .find(c => c.startsWith('csrftoken='));
+        if (!csrfTokenCookie) return null;
+        return csrfTokenCookie.split('=')[1];
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const addServiceButtons = document.querySelectorAll('.add-service-btn');
+        const selectedServicesContainer = document.getElementById('selected-services');
+        const addSelectedServicesButton = document.getElementById('add-selected-services-btn');
+        const cartContainer = document.querySelector('.col-md-12.text-right.mb-3');
+        const bookingId = addSelectedServicesButton.dataset.booking;
+
+        addServiceButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const serviceId = button.getAttribute('data-service-id');
+                const serviceName = button.parentElement.querySelector('.card-title').textContent;
+                const servicePrice = button.parentElement.querySelector('.card-text').textContent;
+                
+                if (!isServiceAlreadyAdded(serviceId)) {
+                    const selectedServiceElement = document.createElement('div');
+                    selectedServiceElement.innerHTML = `
+                    <div class="row mb-1 align-items-center">
+                        <div class="col">${serviceName} - <span>${servicePrice}</span></div>
+                        <div class="col-auto">
+                            <input type="hidden" name="selected_services" value="${serviceId}">
+                            <button type="button" class="btn btn-sm btn-danger remove-service-btn">Удалить</button>
+                        </div>
+                    </div>
+                `;
+                    selectedServicesContainer.appendChild(selectedServiceElement);
+
+                    button.disabled = true;
+                    $('#empty').hide();
+
+                    addSelectedServicesButton.style.display = 'block';
+
+                    selectedServiceElement.querySelector('.remove-service-btn').addEventListener('click', function() {
+                        selectedServiceElement.remove();
+                        if (selectedServicesContainer.children.length === 0) {
+                            addSelectedServicesButton.style.display = 'none';
+                            cartContainer.style.display = 'block'; 
+                        }
+                        button.disabled = false;
+                    });
+                }
+            });
+        });
+
+        addSelectedServicesButton.addEventListener('click', function() {
+            const selectedServices = document.querySelectorAll('input[name="selected_services"]');
+            let selectedServiceIds = '';
+            selectedServices.forEach(function(service) {
+                selectedServiceIds += service.value + '_';
+            });
+
+            selectedServiceIds = selectedServiceIds.slice(0, -1);
+
+            // Получение значения переменной bookingId
+            const bookingId = addSelectedServicesButton.dataset.booking;
+
+            // Отправка POST-запроса на сервер через AJAX
+            const submitUrl = addSelectedServicesButton.dataset.submitUrl;
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('POST', submitUrl, true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            const csrfToken = getCSRFToken();
+            if (csrfToken) {
+                xhr.setRequestHeader('X-CSRFToken', csrfToken);
+            }
+
+            xhr.onload = function() {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    // Обработка успешного ответа от сервера
+                    const response = JSON.parse(xhr.responseText);
+                    console.log(response);
+                } else {
+                    // Обработка ошибки
+                    console.error('Ошибка при отправке запроса:', xhr.statusText);
+                }
+            };
+
+            // Обработчик события ошибки
+            xhr.onerror = function() {
+                console.error('Ошибка сети');
+            };
+
+            // Добавление значения переменной bookingId к данным запроса
+            const requestData = 'selected_service_ids=' + selectedServiceIds + '&booking_id=' + bookingId;
+
+            xhr.send(requestData);
+
+            cartContainer.style.display = 'none';
+        });
+
+        function isServiceAlreadyAdded(serviceId) {
+            const selectedServiceInputs = document.querySelectorAll('input[name="selected_services"]');
+            for (let input of selectedServiceInputs) {
+                if (input.value === serviceId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    });
+</script>

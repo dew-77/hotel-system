@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h1 class="">{{ layout.name }}</h1>
+                    <h2 class="">от <span class="price">{{ layout.cost_per_day }} руб/сутки</span></h2>
+                </div>
+                <div class="text-md-end mt-4">
+                    <a class="btn btn-lg btn-primary" href="{% url "bookings:book" layout.slug %}">Забронировать</a>
+                </div>
+            </div>
+        </div>
+
+
+            
+    <hr class="my-4">
+    <h3 class="mt-3">Описание</h3>
+    <p>{{ layout.description }}</p>
+    <hr class="my-4">
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <div id="myCarousel" class="carousel carousel-small slide pointer-event" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    {% for image in layout.images.all %}
+                    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner">
+                    {% for image in layout.images.all %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img class="d-block w-100 bright" src="{{ image.image.url }}" alt="Room">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr class="my-4">        
+        <div class="row">
+            <h3 class="mb-3">Характеристики и правила</h3>
+            <div class="col-md-6 low_height">
+                <p ><span class="gray_text">Количество комнат: </span> 1 </p>
+                <p ><span class="gray_text">Площадь: </span> 1 кв. м. </p>
+                <p ><span class="gray_text">Вместимость: </span> {{ layout.capacity_person }} чел. </p>
+                <p ><span class="gray_text">Балкон: </span> {% if layout.balcony %}Да{% else %}Нет{% endif %} </p>
+            </div>
+            <div class="col-md-6 low_height">
+                <p ><span class="gray_text">Заврак: </span> {% if layout.possible_with_children %}Включен в стоимость{% else %}Не включен в стоимость{% endif %} </p>
+                <p ><span class="gray_text">Можно с детьми: </span> {% if layout.possible_with_children %}Да{% else %}Нет{% endif %} </p>
+                <p ><span class="gray_text">Можно с животными: </span> {% if layout.possible_with_pets %}Да{% else %}Нет{% endif %} </p>
+                <p ><span class="gray_text">Доступно для инвалидов: </span> {% if layout.accessible_for_disabled %}Да{% else %}Нет{% endif %} </p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4">
+    {% include "rooms/includes/faq.html" %}
+</div>
+
+{% endblock content %}

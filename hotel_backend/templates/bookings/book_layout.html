@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center"><span class="price">Бронирование</span> номера</h1>
+        
+        <div class="row my-5">
+
+                <div class="col-md-6 mt-4">
+                    <form id="booking-form" method="post" action="{% url 'bookings:confirm_booking' layout.slug %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="check-in-date"><h3>Дата въезда:</h3></label>
+                            <input id="check-in-date" class="form-control" type="date" name="check_in_date" style="width: 70%;">
+                        </div>
+                        <div class="form-group my-4">
+                            <label for="check-out-date"><h3>Дата выезда:</h3></label>
+                            <input id="check-out-date" class="form-control" type="date" name="check_out_date" style="width: 70%;">
+                        </div>
+                        <div class="form-group">
+                            <label for="capacity"><h3>Количество гостей:</h3></label>
+                            <select id="capacity" class="form-control" name="capacity" style="width: 70%;">
+                            {% for i in layout.capacity_person_list %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <div id="availability-result" class="my-2"></div>
+                </div>
+                <div class="col-md-6 mt-4">
+                    <h3>Ваш заказ</h3>
+                    <h5>{{ layout.name }} - <span class="price">{{ layout.cost_per_day }}</span> руб/сутки</h5>
+                    <h5 id="result-header">*Для продолжения формирования заказа введите <span class="price">даты</span>!</h5>
+                    <hr id="result-hr" style="display:none">
+                    <h3 id="result-summary-header" style="display:none">Итого к оплате</h3>
+                    <h5 id="summary" style="display:none"></h5>
+                    <input type="submit" id="continue" value="Оформить бронирование" class="mt-2 btn btn-primary btn-lg" style="display: none;">
+                </div>
+            </div>
+        </form>
+    </div>
+    {% include "bookings/includes/faq.html" %}
+
+    <script>
+        $(document).ready(function() {
+            $('#check-in-date, #check-out-date').change(function() {
+                var checkInDate = $('#check-in-date').val();
+                var checkOutDate = $('#check-out-date').val();
+                var layoutSlug = '{{ layout.slug }}';
+                $('#booking-form').attr('action', '{% url "bookings:confirm_booking" layout.slug %}?check_in_date=' + checkInDate + '&check_out_date=' + checkOutDate);
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'bookings:check_availability' %}",
+                    data: {
+                        'check_in_date': checkInDate,
+                        'check_out_date': checkOutDate,
+                        'layout_slug': layoutSlug,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.available) {
+                            $('#availability-result').html('<h5 style="color:green">Есть свободные комнаты на этот период!</h5>');
+                            $('#booking-form').show();
+                            $('#continue').show();
+                            $('#summary').show();
+                            $('#result-header').html(`Въезд <span class="price">${checkInDate}</span>, выезд - <span class="price">${checkOutDate}</span>`);
+                            $('#result-summary-header').show();
+                            $('#summary').html(`<span class="price">${response.num_days}</span> дня * <span class="price">{{ layout.cost_per_day }}</span> руб/сутки = <span class="price">${response.total_cost}</span> руб.`);
+                            $('#result-hr').show();
+                        } else {
+                            $('#availability-result').html('<h5 style="color:red">Нет свободных комнат на этот период</h5>');
+                            $('#booking-form').show();
+                            $('#continue').hide();
+                            $('#result-hr').hide();
+                            $('#result-header').html('*Для продолжения формирования заказа введите <span class="price">другую</span> дату!');
+                            $('#result-summary-header').hide();
+                            $('#summary').hide();
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        $('#availability-result').html('<h5 style="color:red;">Даты введены некорректно</h5>');
+                        $('#booking-form').show();
+                        $('#continue').hide();
+                        $('#result-hr').hide();
+                        $('#result-summary-header').hide();
+                        $('#summary').hide();
+                        $('#result-header').html('*Для продолжения формирования заказа введите <span class="price">другую</span> дату!');
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock content %}
+
+
+    

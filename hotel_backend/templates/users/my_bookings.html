@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "users/my_profile.html" %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2 class="text-center mt-5">Мои <span class="price">бронирования</span></h2>
+            <p class="text-center mb-5">В данном разделе вы можете просмотреть, подтвердить или удалить свои бронирования.</p>
+            <div class="table-responsive">
+                <table class="table table-striped" id="bookingsTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" data-sort="id">ID брони</th>
+                            <th scope="col" data-sort="room_number">Комната</th>
+                            <th scope="col" data-sort="layout_type">Название</th>
+                            <th scope="col" data-sort="check_in_date">Дата проживания</th>
+                            <th scope="col" data-sort="created_at">Дата заказа</th>
+                            <th scope="col" data-sort="bill">Сумма</th>
+                            <th scope="col">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td>{{ booking.id}}</td>
+                            <td>№ {{ booking.room.number}}</td>
+                            <td>{{ booking.room.layout_type.name }}</td>
+                            <td>С {{ booking.check_in_date }} по {{ booking.check_out_date }}</td>
+                            <td>{{ booking.created_at }}</td>
+                            <td>{{ booking.bill }} руб.</td>
+                            <td>
+                                {% if booking.is_confirmed %}
+                                    <a class="btn disabled btn-primary ">Подтверждено</a>
+                                {% else %}
+                                    <a class="btn btn-primary" href="{% url "bookings:presuccess" booking.id %}" style="price">Подтвердить</a>
+                                    <a class="btn btn-primary" href="{% url "bookings:precancel" booking.id %}"style="background-color:#000000;">Отменить</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready( function () {
+        $('#bookingsTable').DataTable({
+            "paging": false,
+            "info": false,
+            "language": {
+                "search": "Поиск (например, 2 апреля):",
+                "lengthMenu": "Показать _MENU_ записей",
+                "info": "Показано с _START_ по _END_ из _TOTAL_ записей",
+                "infoEmpty": "Показано с 0 по 0 из 0 записей",
+                "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                "zeroRecords": "Ничего не найдено",
+                "paginate": {
+                    "first": "Первая",
+                    "last": "Последняя",
+                    "next": "Следующая",
+                    "previous": "Предыдущая"
+                },
+                "aria": {
+                    "sortAscending": ": активировать сортировку столбца по возрастанию",
+                    "sortDescending": ": активировать сортировку столбца по убыванию"
+                }
+            },
+            "columns": [
+            null,
+            null, 
+            null, 
+            { "searchable": true },
+            null,
+            null,
+            null
+        ]
+        });
+    });
+</script>
+
+{% endblock %}

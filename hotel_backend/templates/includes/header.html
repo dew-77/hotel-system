@@ -1,0 +1,42 @@
+<header class="p-3  border-bottom"> {% comment "mb 3" %}{% endcomment %}
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <div class="col-lg-2">
+            <a href="{% url "homepage:home" %}" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                <span class="logo-text">Отель "Комфортик"</span>
+            </a>
+        </div>
+      
+        <div class="col-lg-10 d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="{% url "rooms:layout_list" %}" class="nav-link px-2 link-dark">Бронирование</a></li>
+          <li><a href="{% url "additional_services:list" %}" class="nav-link px-2 link-dark">Услуги</a></li>
+          <li><a href="{% url "reviews:list" %}" class="nav-link px-2 link-dark">Отзывы</a></li>
+        </ul>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+          <input type="search" class="form-control rounded-pill" placeholder="Поиск..." aria-label="Search">
+        </form>
+
+        {% if user.is_authenticated %}
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle align-items-center" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="true">
+            <img src="{{ user.photo.url }}" alt="mdo" style="max-width: 32px; max-height: 32px;" class="rounded-circle me-1">
+            <span class="align-middle">{{ user.first_name }} {{ user.last_name }}</span>
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 34px);" data-popper-placement="bottom-start">
+              <li><a class="dropdown-item" href="{% url "users:cabinet" %}">Профиль и заказы</a></li>
+              <li><a class="dropdown-item" href="#">Настройки</a></li>
+              <li><a class="dropdown-item" href="{% url "users:logout" %}">Выход</a></li>
+          </ul>
+      </div>
+      
+      {% else %}
+      <div class="text-end">
+        <a href="{% url 'users:login' %}" class="btn link-dark">Вход</a>
+        <a href="{% url "users:register" %}" class="btn link-dark">Регистрация</a>
+      {% endif %}
+      </div>
+    </div>
+    </div>
+  </header>

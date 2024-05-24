@@ -1,0 +1,32 @@
+<div class="album py-5 {% if request.resolver_match.view_name == 'homepage:home' %}bg-light{% endif %}" id="album">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-md-3 g-3">
+        {% for layout in layouts %}
+        <div class="col">
+          <div class="card h-100">
+              <img class="card-img-top img-fluid" src="{{ layout.images.first.image.url }}" alt="{{ layout.images.first.name }}">
+              <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ layout.name }}</h5>
+              <p class="card-text flex-grow-1">
+                {{ layout.description|truncatechars:150 }}
+              </p>
+  
+              <div class="d-grid gap-2">
+                <a href="{% url 'bookings:book' layout.slug %}" class="btn btn-primary">Забронировать от {{ layout.cost_per_day }} руб</a>
+                <a href="{% url 'rooms:layout_detail' layout.slug %}" class="btn btn-secondary">Подробнее</a>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% if request.resolver_match.view_name == 'homepage:home' %}
+        <div class="row mt-4">
+          <div class="col text-center">
+            <a href="{% url "rooms:layout_list" %}" class="btn btn-primary btn-lg">Смотреть все варианты</a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>

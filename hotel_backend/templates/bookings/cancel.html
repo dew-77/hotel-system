@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Отмена бронирования</h2>
+  <form method="post" action="{% url 'bookings:cancel' booking.id %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="confirmation"
+          name="confirmation"
+          required
+        />
+        <label class="form-check-label" for="confirmation"
+          >Подтвердите отмену бронирования</label
+        >
+      </div>
+    </div>
+    <button type="submit" class="btn btn-danger mt-4">Отменить бронирование</button>
+  </form>
+  {% endblock content %}
+</div>

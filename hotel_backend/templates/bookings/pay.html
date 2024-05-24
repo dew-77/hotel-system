@@ -1,0 +1,145 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+  <div class="py-5 text-center">
+    <h2>Подтверждение бронирования</h2>
+    <p class="lead">
+    </p>
+  </div>
+
+  <div class="row g-5">
+    <div class="col-md-5 col-lg-4 order-md-last">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="price">Ваше бронирование</span>
+        <span class="badge bg-primary rounded-pill">1</span>
+      </h4>
+      <ul class="list-group mb-3">
+        <li class="list-group-item d-flex justify-content-between lh-sm">
+          <div>
+            <h6 class="my-0">{{ booking.room.layout_type.name }}</h6>
+            <small class="text-muted">Бронь от {{ booking.created_at }}</small>
+          </div>
+          <span class="text-muted">{{ booking.bill }} руб</span>
+        </li>
+        {% for addit_service in booking.additional_services.all %}
+        <li class="list-group-item d-flex justify-content-between lh-sm">
+          <div>
+            <h6 class="my-0">{{ addit_service.name }}</h6>
+          </div>
+          <span class="text-muted">{{ addit_service.price }} руб.</span>
+        </li>
+        {% endfor %}
+
+        <li class="list-group-item d-flex justify-content-between lh-sm">
+          <div>
+            <h6 class="my-0">Итого за бронирование</h6>
+          </div>
+          <span class="text-muted">{{ booking.total_price }} руб.</span>
+        </li>
+        <li class="list-group-item justify-content-between lh-sm text-center">
+          <span class="text-muted">Итого * 50% = плата за подтверждение </span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <h6>К оплате для подтверждение</h6>
+          <strong>{{ booking.total_price_part }} руб.</strong>
+        </li>
+      </ul>
+
+    </div>
+    <div class="col-md-7 col-lg-8">
+        <form method="post" action="{% url 'bookings:confirm' booking.id %}">
+            {% csrf_token %}
+        <h4 class="mb-3">Оплата</h4>
+
+        <div class="my-3">
+          <div class="form-check">
+            <input
+              id="credit"
+              name="paymentMethod"
+              type="radio"
+              class="form-check-input"
+              checked=""
+              required=""
+            />
+            <label class="form-check-label" for="credit">Кредитная карта</label>
+          </div>
+          <div class="form-check">
+            <input
+              id="debit"
+              name="paymentMethod"
+              type="radio"
+              class="form-check-input"
+              required=""
+            />
+            <label class="form-check-label" for="debit">Дебетовая карта</label>
+          </div>
+          <div class="form-check">
+            <input
+              id="paypal"
+              name="paymentMethod"
+              type="radio"
+              class="form-check-input"
+              required=""
+            />
+            <label class="form-check-label" for="paypal">PayPal</label>
+          </div>
+        </div>
+
+        <div class="row gy-3">
+          <div class="col-md-6">
+            <label for="cc-name" class="form-label">Имя держателя карты</label>
+            <input
+              type="text"
+              class="form-control"
+              id="cc-name"
+              placeholder="IVAN IVANOV"
+              required=""
+            />
+            <small class="text-muted">Полное имя как указано на карте</small>
+            <div class="invalid-feedback">Необходимо указать имя держателя карты</div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="cc-number" class="form-label">Номер карты</label>
+            <input
+              type="text"
+              class="form-control"
+              id="cc-number"
+              placeholder="1234 5678 1234 5678"
+              required=""
+            />
+            <div class="invalid-feedback">Необходимо указать номер карты</div>
+          </div>
+
+          <div class="col-md-3">
+            <label for="cc-expiration" class="form-label">Срок действия</label>
+            <input
+              type="text"
+              class="form-control"
+              id="cc-expiration"
+              placeholder="01/23"
+              required=""
+            />
+            <div class="invalid-feedback">Необходимо указать срок действия</div>
+          </div>
+
+          <div class="col-md-3">
+            <label for="cc-cvv" class="form-label">CVV</label>
+            <input
+              type="text"
+              class="form-control"
+              id="cc-cvv"
+              placeholder="123"
+              required=""
+            />
+            <div class="invalid-feedback">Необходимо указать CVV</div>
+          </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <button type="submit" class="btn btn-primary btn-lg">Подтвердить бронирование</button>
+    </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

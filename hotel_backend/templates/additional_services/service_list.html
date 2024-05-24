@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .card-img {
+        height: 300px; /* Задаем желаемую высоту */
+        object-fit: cover; /* Обрезаем изображение по размерам контейнера */
+    }
+</style>
+<div class="container">
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Список услуг</h1>
+            <p class="lead text-muted">В данном разделе перечислены все дополнительные клиентские услуги, предоставляемые отелем. <br>Надеемся, что это поможет вам сделать выбор в пользу именно нашего отеля!</p>
+          </div>
+        </div>
+      </section>
+<div class="row">
+  {% for service in services %}
+  <div class="row">
+    <div class="col-lg-12 mb-5">
+        <div class="card">
+            <div class="row no-gutters">
+                <div class="col-md-6">
+                    <img class="card-img img-fluid" src="{{ service.image.url }}" alt="{{ service.name }}">
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h2 class="fw-light">{{ service.name }} - <span class="price">{{ service.price }}</span> руб.</h2>
+                        <hr>
+                        <h4 class="fw-light"> Описание:</h4>
+                        <p>{{ service.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  {% endfor %}
+</div>
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Покупка услуг доступна после оформления бронирования</h1>
+        <p class="lead text-muted">Для этого перейдите в раздел <a href="#" class="custom-link">"Бронирование"</a> и завершите процедуру бронирования</p>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock content %}

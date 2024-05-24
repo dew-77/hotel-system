@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+{% load static %}
+{% block content %}
+<div class="container">
+  <div class="my-5">
+    <h1 class="mb-4">
+      Бронирование создано, но не подтверждено!
+    </h1>
+    <hr class="my-4">
+
+    <h2>Шаг 1. Выбор дополнительных <span class="price">услуг</span></h3>
+    <h5 class="my-4">
+      Вы можете выбрать необходимые вам дополнительные услуги из нашего широкого ассортимента клиентских услуг.
+      {% include "additional_services/service_chooser.html" %}
+    </h5>
+
+    <h2>Шаг 2. Внесение <span class="price">предоплаты</span> </h3>
+    <h5 class="my-4">
+      Теперь вам необходимо <b>подтвердить</b> бронь, внеся предоплату. Сделать
+      это можно нажав кнопку ниже или до конца дня в разделе <a class="custom-link" href="{% url "users:cabinet" %}">"Мои бронирования"</a>.
+    </h5>
+    <div class="d-grid gap-2">
+      <a class="btn btn-lg btn-primary" href="{% url "bookings:pay" booking.id %}">Оплатить</a>
+      <a class="btn btn-lg btn-outline-secondary" href="{% url "users:cabinet" %}">Оплачу позже</a>
+    </div>
+  </div>
+</div>
+{% endblock content %}

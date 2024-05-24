@@ -1,0 +1,38 @@
+<div class="row mt-5">
+    <div class="col-md-8 mx-auto">
+      <div class="card">
+        <div class="row no-gutters">
+          <div class="col-md-6 px-0">
+            <img
+              src="{{ booking.room.layout_type.images.first.image.url }}"
+              class="card-img-top"
+              alt="Изображение номера"
+            />
+          </div>
+          <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="card-body text-center">
+              <h5 class="card-title">
+                Ваш номер: <b>номер №{{ booking.room.number }}</b>
+              </h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                Тип номера: {{ booking.room.layout_type.name }}
+              </h6>
+              <p class="card-text">
+                {{ check_in_date }} - {{ check_out_date }}
+              </p>
+              <p class="card-text">
+                Адрес: ул. Примерная, д. 123, этаж {{ booking.room.floor}}, комната
+                {{ booking.room.number }}
+              </p>
+              <a target="_blank"
+                href="http://www.google.com/calendar/event?action=TEMPLATE&text=Бронирование номера&dates={{ check_in_date_formatted }}T{{ check_in_time_formatted }}Z/{{ check_out_date_formatted }}T{{ check_out_time_formatted }}Z&details={{ event_details | urlencode }}"
+                class="btn btn-primary"
+              >
+                Добавить в Google Календарь
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

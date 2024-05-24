@@ -1,0 +1,75 @@
+<div class="container mt-5">
+    <div class="row mt-4">
+        {% for service in services %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img class="card-img-top" src="{{ service.image.url }}" alt="{{ service.name }}" style="max-height:200px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ service.name }}</h5>
+                    <p class="card-text">{{ service.description }}</p>
+                    <button type="button" class="btn btn-primary add-service-btn" data-service-id="{{ service.id }}">{{ service.price }} руб.</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="col-md-12 text-right mb-3">
+            <hr class="my-4"> 
+            <h2 class="mb-3">Корзина:</h2>
+            <div id="selected-services"></div> <!-- Здесь будут отображаться выбранные услуги -->
+            <button type="submit" class="btn btn-primary mt-3" id="add-selected-services-btn" style="display: none;">Добавить выбранные услуги</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const addServiceButtons = document.querySelectorAll('.add-service-btn');
+        const selectedServicesContainer = document.getElementById('selected-services');
+        const addSelectedServicesButton = document.getElementById('add-selected-services-btn');
+        
+        addServiceButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const serviceId = button.getAttribute('data-service-id');
+                const serviceName = button.parentElement.querySelector('.card-title').textContent;
+                const servicePrice = button.parentElement.querySelector('.card-text').textContent;
+                
+                if (!isServiceAlreadyAdded(serviceId)) {
+                    const selectedServiceElement = document.createElement('div');
+                    selectedServiceElement.innerHTML = `
+                    <div class="row mb-1 align-items-center">
+                        <div class="col">${serviceName} - <span>${servicePrice}</span></div>
+                        <div class="col-auto">
+                            <input type="hidden" name="selected_services" value="${serviceId}">
+                            <button type="button" class="btn btn-sm btn-danger remove-service-btn">Удалить</button>
+                        </div>
+                    </div>
+                `;
+                    selectedServicesContainer.appendChild(selectedServiceElement);
+
+                    button.disabled = true;
+
+                    addSelectedServicesButton.style.display = 'block';
+
+                    selectedServiceElement.querySelector('.remove-service-btn').addEventListener('click', function() {
+                        selectedServiceElement.remove();
+                        if (selectedServicesContainer.children.length === 0) {
+                            addSelectedServicesButton.style.display = 'none';
+                        }
+                        button.disabled = false;
+                    });
+                }
+            });
+        });
+
+        function isServiceAlreadyAdded(serviceId) {
+            const selectedServiceInputs = document.querySelectorAll('input[name="selected_services"]');
+            for (let input of selectedServiceInputs) {
+                if (input.value === serviceId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    });
+</script>

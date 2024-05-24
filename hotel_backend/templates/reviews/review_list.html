@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+  .page-link,
+  .page-link:hover{
+    color: #a57bb8;
+  }
+  .page-item.active .page-link{
+    background-color: #a57bb8 !important;
+    border-color:#a57bb8 !important;
+  }
+  #carouselId {
+    width: 100%;
+}
+*,
+        *::after,
+        *::before {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: rgb(241 245 249);
+        }
+
+        main {
+            width: 100vw;
+            height: 100vh;
+            flex-direction: row;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        em {
+            color: #0d6efd;
+        }
+
+        /* Controls */
+        .carousel-control-next {
+            margin: 0 3em;
+        }
+
+        i.fa-arrow-right,
+        i.fa-arrow-left {
+            background: none;
+            border: 2px solid #0d6efd;
+            color: #0d6efd;
+            padding: 10px;
+            border-radius: 100%;
+            transition: background .6s ease;
+        }
+
+        i.fa-arrow-right:hover,
+        i.fa-arrow-left:hover {
+            background: #0d6efd;
+            color: white;
+        }
+
+        /* Indicators */
+        .carousel-indicators {
+            justify-content: flex-start;
+            transform: translate(-40px, 50px);
+        }
+
+        .carousel-indicators [data-bs-target] {
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+            border: 2px solid #0d6efd;
+        }
+
+        .carousel-indicators .active {
+            opacity: 1;
+            background-color: #0d6efd;
+        }
+
+        /* Control buttons */
+        .control-btn {
+            position: absolute;
+            top: 8px;
+            right: 10em;
+        }
+
+        .carousel-control-next,
+        .carousel-control-prev {
+            top: 1em;
+            left: 3em;
+        }
+
+        .testimonial-text {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            column-gap: 20px;
+        }
+
+        .wow {
+            position: relative;
+            grid-column: span 2;
+        }
+
+        .carousel-landmark {
+            grid-column: span 3;
+        }
+
+        @media screen and (max-width: 576px) {
+            .testimonial-text {
+                margin-top: 50px;
+                row-gap: 50px;
+            }
+
+            .wow {
+                grid-column: span 5;
+            }
+
+            .carousel-landmark {
+                grid-column: span 5;
+            }
+        }
+</style>
+
+<div class="container mt-3">
+  <section class="py-5 text-center container">
+      <div class="row py-lg-5">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <h1 class="fw-light">Отзывы</h1>
+          <p class="lead text-muted">Подробные отзывы от наших гостей о своем пребывании в нашем отеле. Они помогут вам получить представление о качестве нашего обслуживания, комфорте номеров и общей атмосфере нашего отеля.</p>
+        </div>
+      </div>
+  </section>
+</div>
+
+<div class="container-xxl py-5">
+    <div class="container py-5">
+        <div class="testimonial-text g-5">
+            <div class="wow fadeIn" data-wow-delay="0.1s">
+                <button class="btn btn-sm border rounded-pill text-primary px-3 mb-3">Testimonial</button>
+                <h1 class="mb-4">LambdaTest Reviews</h1>
+                    <p class="mb-4">Our Unified Testing Cloud enables you to deliver world class digital experience with quality releases and help accelerate your release velocity.</p>
+                    <a class="btn btn-primary rounded-pill px-4" href="https://www.lambdatest.com/reviews">Contact Sales</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <section class="carousel-landmark wow fadeIn" data-wow-delay="0.5s">
+        <div id="carouselExampleCaptions" class="carousel slide testimonial-carousel border-start border-primary">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner"><!--The Carousel Container-->
+                <div class="carousel-item carousel-item-1 active"><!--The Carousel item 1-->
+                    <div class="testimonial-item ps-5">
+                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                        <p class="fs-4 textimal-text">Super top notch customer support from <em>@lambdatesting</em> - just throwing it out there if you're looking for a decent browser testing platform, they get my full double thumbs up. Thumbs upThumbs up</p>
+                        <div class="d-flex align-items-center">
+                            <img class="img-fluid flex-shrink-0 rounded-circle" src="https://user-images.githubusercontent.com/78242022/266013790-4d674d96-a311-47c3-9b7c-03feaa36c948.png"
+                                style="width: 60px; height: 60px;">
+                            <div class="ps-3">
+                                <h5 class="mb-1">Ben Pritchard</h5>
+                                <span class="at">@yesiamben</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carousel Item 2 -->
+                <div class="carousel-item carousel-item-2">
+                    <div class="testimonial-item ps-5">
+                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                        <p class="fs-4 textimal-text"><em>@lambdatesting</em> is fantastic. Cross browser and device testingtesting frustration is minimized. You can't get rid of clients that need ie11 nor can you own every device but lambda test bridge that gap.</p>
+                        <div class="d-flex align-items-center">
+                            <img class="img-fluid flex-shrink-0 rounded-circle" src="https://user-images.githubusercontent.com/78242022/266013776-40ac50f1-31f8-4250-acb2-05f16d683baa.png"
+                                style="width: 60px; height: 60px;">
+                            <div class="ps-3">
+                                <h5 class="mb-1">Mat Gargano</h5>
+                                <span class="at">@matgargano</span>
+                            </div>
+                        </div>
+                    </div><!--[end of card]-->
+                </div> <!--[carousel-item-2]-->
+
+                <!-- Carousel Item 3 -->
+                <div class="carousel-item carousel-item-2">
+                    <div class="testimonial-item ps-5">
+                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                        <p class="fs-4 textimal-text">second-day using <em>@lambdatesting</em> and it's already proven itself a lot faster than Cross Browser Testing and BrowserStack, at half the price! bargain</p>
+                        <div class="d-flex align-items-center">
+                            <img class="img-fluid flex-shrink-0 rounded-circle" src="https://user-images.githubusercontent.com/78242022/266013762-54201d6a-0923-4969-948c-790dec804253.png"
+                                style="width: 60px; height: 60px;">
+                            <div class="ps-3">
+                                <h5 class="mb-1">Matthew Bryson</h5>
+                                <span class="at">@mbrysonuk</span>
+                            </div>
+                        </div>
+                    </div><!--[end of card]-->
+                </div>
+                
+                <!-- Control Buttons -->
+                <div class="control-btn">
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                      <i class="fa-solid fa-arrow-left"></i>
+                      <span class="carousel-control-prev-icon visually-hidden" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                      <i class="fa-solid fa-arrow-right"></i>
+                      <span class="carousel-control-next-icon visually-hidden" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                </div><!--[end of control buttons]-->
+            </div><!--[End of Container]-->
+        </div><!--[End of carousel]-->
+    </section><!--End of Carousel Landmark-->
+</div>
+
+<div class="container mt-3">
+    <div class="row text-center mb-5">
+        {% for review in reviews %}
+        <div class="col-md-4 my-4 mb-md-0">
+            <div class="d-flex justify-content-center mb-4">
+                <img src="{{ review.guest.photo.url }}" class="rounded-circle shadow-1-strong" style="width: 150px; height: 150px; object-fit: cover;">
+            </div>
+            <h5 class="mb-3">{{ review.guest.first_name }} {{ review.guest.last_name }}</h5>
+            <h6 class="text-primary mb-3" style="color:#a57bb8 !important;">{{ review.created_at }}</h6>
+            <p class="px-xl-3"><i class="fas fa-quote-left pe-2"></i>{{ review.text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            {% for page_number in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_number == page_obj.number %}active{% endif %}">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% endfor %}
+            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+{% endblock content %}
