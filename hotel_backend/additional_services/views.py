@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.views.generic import DetailView, ListView
+from django.views.generic import ListView
 
 from .models import Service
 from bookings.models import Booking
@@ -29,14 +29,9 @@ def submit_services(request):
 
     else:
         return JsonResponse(
-            {'error': 'Метод запроса должен быть POST'}, status=405)
+            {'error': 'Метод запроса должен быть POST'}, status=404)
 
 
 class ServiceListView(ListView):
     model = Service
     context_object_name = 'services'
-
-
-class ServiceDetailView(DetailView):
-    model = Service
-    context_object_name = 'service'

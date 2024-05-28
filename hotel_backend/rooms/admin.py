@@ -16,12 +16,12 @@ class AmenityAdmin(admin.ModelAdmin):
     def layouts_with_amenity(self, obj):
         return obj.layout_set.count()
 
-    layouts_with_amenity.short_description = 'Количество комнат'
+    layouts_with_amenity.short_description = 'Количество планировок'
 
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        queryset = queryset.prefetch_related('room_set')
-        return queryset
+    # def get_queryset(self, request):
+    #     queryset = super().get_queryset(request)
+    #     queryset = queryset.prefetch_related('room_set')
+    #     return queryset
 
 
 @admin.register(Layout)

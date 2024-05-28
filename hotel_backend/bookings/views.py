@@ -11,7 +11,6 @@ from .models import Booking
 
 
 @login_required
-# НАПИШИ КАСТОМНЫЕ ПЕРМИШНЫ is_author_permission
 def booking_confirm(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
     check_out_date = booking.check_out_date
@@ -64,7 +63,6 @@ def booking_cancel(request, booking_id):
         return HttpResponseForbidden("Метод не разрешен")
 
 
-# Check author
 @login_required
 def booking_pay(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
@@ -87,6 +85,7 @@ def booking_precancel(request, booking_id):
     return render(request, 'bookings/cancel.html', {'booking': booking})
 
 
+@login_required
 def book_layout(request, layout_slug):
     layout = get_object_or_404(Layout, slug=layout_slug)
     layout.capacity_person_list = [

@@ -27,6 +27,7 @@ class MyBookingsListView(LoginRequiredMixin, ListView):
 
         context['user'] = user
         context['bookings'] = bookings
+        print(total_services)
         context['total_services'] = total_services.get('total_services', 0)
         return context
 
